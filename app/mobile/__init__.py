@@ -3,4 +3,4 @@ from flask import Blueprint
 
 mobile = Blueprint('mobile', __name__)
 
-from app.main import views
+from app.mobile import views

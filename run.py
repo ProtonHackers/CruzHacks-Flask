@@ -6,7 +6,7 @@ import sys
 
 import click
 
-from app import create_app
+from app import create_app,db
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,6 +15,14 @@ app = create_app('development')
 """
     Set up Celery Commands
 """
+@app.cli.command()
+@click.argument('drop_first', nargs=-1)
+def initdb(drop_first):
+    """Initialize the database."""
+    click.echo('Init the db')
+    if drop_first:
+        db.drop_all()
+    db.create_all()
 
 @app.cli.command()
 def local_celery():

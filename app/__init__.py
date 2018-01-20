@@ -88,6 +88,10 @@ def create_app(config_name=None, db_ref=None):
     from app.main import main
     app.register_blueprint(main)
 
+    from app.mobile import mobile as mobile_blueprint
+    app.register_blueprint(mobile_blueprint, url_prefix='/mobile')
+    csrf.exempt(mobile_blueprint)
+
     celery.conf.update(config[config_name].CELERY_CONFIG)
     initialize_celery(app)
 
