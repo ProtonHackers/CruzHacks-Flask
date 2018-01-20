@@ -10,7 +10,6 @@ from app.mobile import mobile
 from app.models.user import User
 
 GOOGLE_CLIENT_ID = "566644882675-2msrrs3402pphinl7lbjpohe80527mak.apps.googleusercontent.com"
-
 from flask import json
 
 
@@ -62,12 +61,12 @@ def create_user(user: User):
 def mobile_google_login():
     print(request.data)
     data = get_decoded_data(request.data)
+    print(data)
     google_id_token = data.get('googleIdToken')
     email = data.get('email')
     full_name = data.get('full_name')
-
     user_id = id_token.verify_oauth2_token(google_id_token, requests.Request(), GOOGLE_CLIENT_ID).get('sub')
-
+    print(user_id)
     if user_id is None:
         return jsonify({"error": "Incorrect Google Login Token. Please Try Again"}), 401
 
