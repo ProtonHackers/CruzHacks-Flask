@@ -92,6 +92,11 @@ def create_app(config_name=None, db_ref=None):
     app.register_blueprint(mobile_blueprint, url_prefix='/mobile')
     csrf.exempt(mobile_blueprint)
 
+    from app.vision import vision as vision_blueprint
+    app.register_blueprint(vision_blueprint, url_prefix='/vision')
+    csrf.exempt(vision_blueprint)
+
+
     celery.conf.update(config[config_name].CELERY_CONFIG)
     initialize_celery(app)
 
