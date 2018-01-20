@@ -43,7 +43,7 @@ def mobile_login():
     return jsonify({"error": "Username Doesn't Exist"}), 401  # Invalid Username
 
 
-def create_user(user: User):
+def create_user(user):
     """
     Commits a User to the Database. If there is an error, then returns None.
     :param user: a new user
