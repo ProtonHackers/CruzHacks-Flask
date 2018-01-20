@@ -2,6 +2,7 @@
 import os
 from datetime import datetime
 import hashlib
+import requests
 from flask import render_template, g, request, url_for, jsonify
 from flask_login import login_required, current_user
 
@@ -14,6 +15,21 @@ from app.models.user import User, GroupType
 @main.route('/image',methods=["POST","GET"])
 def image():
     image_path, _ = save_files('audio_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
+
+    cloud_vision_request = jsonify({
+        "requests": [
+            {
+                "type": "LABEL_DETECTION"
+            }
+        ],
+        "image": {
+            "source": {
+                "imageUrl": image_path
+            }
+        }
+    })
+
+    r = requests.post("""TODO create Google signed URL""")
 
     return jsonify({})
 
