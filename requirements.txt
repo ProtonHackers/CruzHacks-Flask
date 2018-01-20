@@ -75,3 +75,4 @@ watchdog==0.8.3
 Werkzeug==0.12.2
 WTForms==2.1
 google-cloud-vision
+google-cloud-storage

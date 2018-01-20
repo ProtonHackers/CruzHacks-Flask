@@ -1,36 +1,25 @@
 # coding=utf-8
+import io
 import os
 from datetime import datetime
 import hashlib
 import requests
-from flask import render_template, g, request, url_for, jsonify
-from flask_login import login_required, current_user
+from flask import request, jsonify
 
 from flask import current_app
-from app import lm, db
 from app.vision import vision
-from app.models.user import User, GroupType
+from app.vision import cloud_api
+
+from google.cloud import vision as cloud_vision
+from google.cloud.vision import types as cloud_types
+from google.cloud import storage as cloud_storage
 
 
-@vision.route('/image',methods=["POST","GET"])
-def image():
-    image_path, _ = save_files('audio_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
+@vision.route('/vision', methods=["POST","GET"])
+def vision():
+    image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
 
-    cloud_vision_request = jsonify({
-        "requests": [
-            {
-                "type": "LABEL_DETECTION"
-            }
-        ],
-        "image": {
-            "source": {
-                "imageUrl": image_path
-            }
-        }
-    })
-
-    r = requests.post("""TODO create Google signed URL""")
-
+    labels = cloud_api.test_request(image_path)
     return jsonify({})
 
 
@@ -52,6 +41,7 @@ def save_files(path, dir, request_files):
         return secret_file_url, request_files[path].filename
     else:
         return None, None
+
 
 def hash_name(name):
    """
