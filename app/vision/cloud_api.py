@@ -12,7 +12,7 @@ def test_request(image_path):
       "image":{
         "source":{
           "imageUri":
-            image_path
+            "http://46.101.35.228/mobile/get_image/"+image_path
         }
       },
       "features":[
