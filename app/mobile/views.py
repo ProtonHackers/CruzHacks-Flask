@@ -91,8 +91,10 @@ def mobile_google_login():
     print("Created Google User")
     return jsonify({"accessToken": access_token, "message": "Google Login Correct", "userID": user.user_id})
 
-@mobile.route('/upload')
+
+@mobile.route('/upload', methods=["POST", "GET"])
 def mobile_file_upload():
+    print(request.files, request.data, request.json)
     auth_token = request.headers.get('Authorization')
     if auth_token is None:
         return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
@@ -100,7 +102,7 @@ def mobile_file_upload():
     if user is None:
         return {"error": "Invalid Token."}, 403
     image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
-    garment = Garment(user_id=user.user_id,image_url=image_path)
+    garment = Garment(user_id=user.user_id, image_url=image_path)
     db.session.add(garment)
     db.session.commit()
 
@@ -112,7 +114,8 @@ def mobile_file_upload():
 
     db.session.commit()
 
-    return jsonify({"image_path":image_path})
+    return jsonify({"image_path": image_path})
+
 
 @mobile.route('/trending')
 def trending():
@@ -185,6 +188,7 @@ def trending():
 
     return jsonify({img, link})
 
+
 @mobile.route('/rec', methods=["POST", "GET"])
 def rec():
     # Features: type, color, season/weather, day
@@ -195,21 +199,17 @@ def rec():
 
     # tags is list of lists
 
-
     tags = Tag.query.all()
     y = []
     for i in tags:
-        y.append(random.randint(1,100))
-
+        y.append(random.randint(1, 100))
 
     # print(len(tags))
     # Assign ranks to various clothing articles
 
-
     model = neighbors.KNeighborsRegressor()
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
-
 
 # @mobile.route('/verify_reset_email/<string:update_type>', methods=["POST", "GET"])
 # def mobile_verify_reset_email(update_type):
