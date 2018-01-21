@@ -23,7 +23,7 @@ def test_request(image_path):
             }
         ]
     }
-    r = requests.post('https://vision.googleapis.com/v1/images:annotate?key=service_account.json', data=d)
+    r = requests.post('https://vision.googleapis.com/v1/images:annotate?key=service.json', data=d)
     labels = json.loads(r.text)
 
     # client = cloud_vision.ImageAnnotatorClient()
