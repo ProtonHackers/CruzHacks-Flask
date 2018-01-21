@@ -105,7 +105,6 @@ def mobile_file_upload():
     garment = Garment(user_id=user.user_id, image_url=image_path)
     db.session.add(garment)
     db.session.commit()
-
     tags = cloud_api.test_request(image_path)
 
     for tag in tags:
