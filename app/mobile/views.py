@@ -120,7 +120,7 @@ def mobile_file_upload():
     return jsonify({"image_path": image_path})
 
 
-@mobile.route('/trending')
+@mobile.route('/trending', methods=['POST', 'GET'])
 def trending():
     img = []
     link = []
