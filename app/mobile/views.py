@@ -6,7 +6,7 @@ import random
 import pickle
 import numpy as np
 
-from flask import request, jsonify, redirect, url_for, current_app
+from flask import request, jsonify, redirect, url_for, current_app, send_from_directory
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
@@ -95,18 +95,19 @@ def mobile_google_login():
 @mobile.route('/upload', methods=["POST", "GET"])
 def mobile_file_upload():
     print(request.files, request.data, request.json)
-    auth_token = request.headers.get('Authorization')
+    # auth_token = request.headers.get('Authorization')
+    auth_token = request.form.get("Authorization")
     if auth_token is None:
         return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
     user = User.query.filter_by(mobile_access_token=auth_token).first()
     if user is None:
         return jsonify({"error": "Invalid Token."}), 403
     image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
-    garment = Garment(user_id=user.user_id, image_url=image_path)
+    garment = Garment(user_id=user.user_id, img_url=image_path)
     db.session.add(garment)
     db.session.commit()
     tags = cloud_api.test_request(image_path)
-
+    print(tags)
     for tag in tags:
         t = Tag(name=tag, garment_id=garment.id)
         db.session.add(t)
@@ -209,6 +210,13 @@ def rec():
     model = neighbors.KNeighborsRegressor()
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
+
+
+@mobile.route('/get_image/<string:path>')
+def get_image(path):
+    return send_from_directory(current_app.config["UPLOAD_TEMPLATE"],
+                               filename=path,
+                               as_attachment=True)
 
 # @mobile.route('/verify_reset_email/<string:update_type>', methods=["POST", "GET"])
 # def mobile_verify_reset_email(update_type):

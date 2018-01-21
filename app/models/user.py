@@ -20,7 +20,7 @@ class User(db.Model):
     __table_name__ = 'User'
     extend_existing = True
     user_id = db.Column(db.Integer, primary_key=True, unique=True)
-
+    extend_existing = True
     username = db.Column(db.String(140), unique=True)
     password = db.Column(db.String(140), unique=False)
     email = db.Column(db.String(140))
