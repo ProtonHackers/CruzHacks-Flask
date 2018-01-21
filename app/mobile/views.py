@@ -2,7 +2,6 @@ import os
 from base64 import b64encode
 import cv2
 import numpy as np
-from sklearn import neighbors
 import random
 import pickle
 import numpy as np
@@ -268,10 +267,6 @@ def rec():
 
     # print(len(tags))
     # Assign ranks to various clothing articles
-
-    model = neighbors.KNeighborsRegressor()
-    model.fit(np.array(tags), np.array(y))
-    pickle.dump(model, os.getcwd() + 'recommender')
 
     url = []
     for i in recommend:
