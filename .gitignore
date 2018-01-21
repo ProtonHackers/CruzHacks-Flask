@@ -5,3 +5,4 @@ venv/
 email_config.json
 redis-stable/
 mobile.http
+app.db
