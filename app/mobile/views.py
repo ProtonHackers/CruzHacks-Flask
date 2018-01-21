@@ -12,8 +12,8 @@ from google.oauth2 import id_token
 
 from app import db
 from app.mobile import mobile
-from app.models.garment import Garment
 from app.models.user import User
+from app.models.garment import Garment
 from app.models.tag import Tag
 from app.main.utils import save_files
 from app.vision import cloud_api
