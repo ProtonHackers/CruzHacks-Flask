@@ -261,6 +261,21 @@ def rec():
     return recommend
 
 
+@mobile.route('/sync', methods=['POST', 'GET'])
+def sync():
+    img = []
+    img.append(
+        "http://www.prana.com/media/catalog/product/cache/1/image/2000x/040ec09b1e35df139433887a97daa66f/w/3/w3amel116_black_l_alt_9.jpg")
+    img.append("https://xo.lulus.com/images/product/xlarge/2341622_369362.jpg")
+    img.append("http://www.boerandfitch.com/14968-thickbox_default/zebra-print-womens-top.jpg")
+    img.append("https://assets.academy.com/mgen/95/10787095.jpg")
+    img.append("https://images-na.ssl-images-amazon.com/images/I/717Z-BZnW3L._UX385_.jpg")
+    img.append(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwXiGr6w-Dm1HSf6bgJkBbmvrJziIwr1wqSdjQSDgHUiW4rcPLQw")
+
+    return jsonify({"img": img})
+
+
 @mobile.route('/get_image/<string:path>')
 def get_image(path):
     return send_from_directory(current_app.config["UPLOAD_TEMPLATE"],
