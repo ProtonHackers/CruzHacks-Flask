@@ -210,7 +210,7 @@ def rec():
     recommend = []
     for i in tags:
         if i.name not in attrs:
-            attrs.append(i.name)
+            attrs.append(i)
             counter.append(1)
         else:
             idx = attrs.index(i.name)
@@ -258,7 +258,12 @@ def rec():
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
 
-    return recommend
+    url = []
+    for i in recommend:
+        x = Garment.filter_by(i.garment_id)
+        url.append(x)
+
+    return url
 
 
 @mobile.route('/sync', methods=['POST', 'GET'])
