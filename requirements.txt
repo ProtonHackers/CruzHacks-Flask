@@ -76,3 +76,4 @@ WTForms==2.1
 google-cloud-vision
 google-cloud-storage
 opencv-python
+pytrends
