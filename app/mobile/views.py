@@ -8,6 +8,7 @@ import pickle
 import numpy as np
 from app.mobile import backgrounds
 from pytrends.request import TrendReq
+from PIL import Image
 
 from flask import request, jsonify, redirect, url_for, current_app, send_from_directory
 from google.auth.transport import requests
@@ -170,7 +171,7 @@ def rec():
     recommend = []
     for i in tags:
         if i.name not in attrs:
-            attrs.append(i.name)
+            attrs.append(i)
             counter.append(1)
         else:
             idx = attrs.index(i.name)
@@ -218,7 +219,13 @@ def rec():
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
 
-    return recommend
+    url = []
+    for i in recommend:
+        g = Garment.query.filter_by(i.garment_id).first()
+
+        url.append([Image.open(g.img_url), g.img_url, i])
+
+    return url
 
 
 @mobile.route('/sync', methods=['POST', 'GET'])
