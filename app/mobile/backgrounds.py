@@ -7,9 +7,9 @@ import os
 
 
 def remove_background(img_path):
-    img = Image.open(img_path)
+    img = Image.open(current_app.config["UPLOAD_TEMPLATE"] + img_path)
     filename, file_extension = os.path.splitext(img_path)
-    img.save(filename + ".png")
+    img.save(current_app.config["UPLOAD_TEMPLATE"] + filename + ".png")
 
     # == Parameters =======================================================================
     BLUR = 21
