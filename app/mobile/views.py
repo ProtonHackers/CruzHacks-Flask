@@ -74,11 +74,13 @@ def mobile_google_login():
     google_id_token = data.get('googleIdToken')
     email = data.get('email')
     full_name = data.get('full_name')
-    import requests
-    user_id = requests.get('http://www.googleapis.com/oauth2/v3/tokeninfo?id_token={}'.format(google_id_token)).json().get('sub')
+    # import requests
+    result = os.popen("curl https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={}".format(google_id_token)).read()
+    import json
+    user_id = json.loads(result).get('sub')
+    # user_id = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={}'.format(google_id_token)).json().get('sub')
     if user_id is None:
         return jsonify({"error": "Incorrect Google Login Token. Please Try Again"}), 401
-
     user = User.query.filter_by(google_id_token=user_id).first()
     if user is None:
         user = User(username=email, email=email, full_name=full_name, google_id_token=user_id, email_verified=1)
