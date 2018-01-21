@@ -95,18 +95,19 @@ def mobile_google_login():
 @mobile.route('/upload', methods=["POST", "GET"])
 def mobile_file_upload():
     print(request.files, request.data, request.json)
-    auth_token = request.headers.get('Authorization')
+    # auth_token = request.headers.get('Authorization')
+    auth_token = request.form.get("Authorization")
     if auth_token is None:
         return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
     user = User.query.filter_by(mobile_access_token=auth_token).first()
     if user is None:
         return jsonify({"error": "Invalid Token."}), 403
     image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
-    garment = Garment(user_id=user.user_id, image_url=image_path)
+    garment = Garment(user_id=user.user_id, img_url=image_path)
     db.session.add(garment)
     db.session.commit()
     tags = cloud_api.test_request(image_path)
-
+    print(tags)
     for tag in tags:
         t = Tag(name=tag, garment_id=garment.id)
         db.session.add(t)
