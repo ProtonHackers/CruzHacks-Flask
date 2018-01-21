@@ -26,10 +26,10 @@ shell:
 # Azure deployment Makefile
 
 create-azure-app:
-	az webapp create --resource-group myResourceGroup --plan myAppServicePlan --name cruzhacks2018 --runtime "python|3.4" --deployment-local-git
+	az webapp create --resource-group myResourceGroup --plan myAppServicePlan --name cruzhacks2018 --runtime "python|2.7" --deployment-local-git
 
 setup-git:
-	git remote add azure https://aubhro20@<APP_NAME>.scm.azurewebsites.net/<APP_NAME>.git
+	git remote add azure https://aubhro20@cruzhacks2018.scm.azurewebsites.net/cruzhacks2018.git
 
 deploy:
 	git push azure master

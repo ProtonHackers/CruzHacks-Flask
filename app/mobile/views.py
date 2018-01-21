@@ -51,6 +51,7 @@ def create_user(user):
     try:
         db.session.add(user)
         db.session.commit()
+        print("Created User")
         return user
     except Exception as e:
         print(e)
@@ -77,6 +78,7 @@ def mobile_google_login():
     access_token = generate_access_token()
     user.mobile_access_token = access_token
     db.session.commit()
+    print("Created Google User")
     return jsonify({"accessToken": access_token, "message": "Google Login Correct", "userID": user.user_id})
 
 
