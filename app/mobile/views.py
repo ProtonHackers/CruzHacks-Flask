@@ -1,10 +1,12 @@
 import os
 from base64 import b64encode
+import cv2
 import numpy as np
 from sklearn import neighbors
 import random
 import pickle
 import numpy as np
+from app.mobile import backgrounds
 
 from flask import request, jsonify, redirect, url_for, current_app, send_from_directory
 from google.auth.transport import requests
@@ -106,6 +108,8 @@ def mobile_file_upload():
     garment = Garment(user_id=user.user_id, img_url=image_path)
     db.session.add(garment)
     db.session.commit()
+    backgrounds.remove_background(image_path)
+
     tags = cloud_api.test_request(image_path)
     print(tags)
     for tag in tags:

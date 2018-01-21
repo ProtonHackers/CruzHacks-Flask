@@ -7,6 +7,7 @@ argh==0.26.2
 Babel==2.5.1
 billiard==3.5.0.2
 blinker==1.4
+numpy
 cachetools==2.0.1
 celery==4.0.2
 certifi==2017.4.17
@@ -74,3 +75,4 @@ Werkzeug==0.12.2
 WTForms==2.1
 google-cloud-vision
 google-cloud-storage
+opencv-python
