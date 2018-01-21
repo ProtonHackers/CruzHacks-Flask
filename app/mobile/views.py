@@ -6,7 +6,7 @@ import random
 import pickle
 import numpy as np
 
-from flask import request, jsonify, redirect, url_for, current_app
+from flask import request, jsonify, redirect, url_for, current_app, send_from_directory
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
@@ -209,6 +209,13 @@ def rec():
     model = neighbors.KNeighborsRegressor()
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
+
+
+@mobile.route('/get_image/<string:path>')
+def get_image(path):
+    return send_from_directory(current_app.config["UPLOAD_TEMPLATE"],
+                               filename=path,
+                               as_attachment=True)
 
 # @mobile.route('/verify_reset_email/<string:update_type>', methods=["POST", "GET"])
 # def mobile_verify_reset_email(update_type):
