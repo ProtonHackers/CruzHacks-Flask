@@ -67,7 +67,11 @@ def create_app(config_name=None, db_ref=None):
         db_ref.reflect(app=app)
 
     migrate.init_app(app, db)
+    buzz_path = basedir + "/app"
 
+    app.config['TMP'] = buzz_path + '/tmp/'
+
+    app.config['UPLOAD_TEMPLATE'] = app.config['TMP'] + "template/"
     jsglue.init_app(app)
     if config_name != 'testing':
         csrf.init_app(app)
@@ -91,7 +95,6 @@ def create_app(config_name=None, db_ref=None):
     from app.vision import vision as vision_blueprint
     app.register_blueprint(vision_blueprint, url_prefix='/vision')
     csrf.exempt(vision_blueprint)
-
 
     celery.conf.update(config[config_name].CELERY_CONFIG)
     initialize_celery(app)
