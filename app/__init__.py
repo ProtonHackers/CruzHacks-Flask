@@ -71,7 +71,7 @@ def create_app(config_name=None, db_ref=None):
 
     app.config['TMP'] = buzz_path + '/tmp/'
 
-    app.config['UPLOAD_TEMPLATE'] = app.config['TMP'] + "template/"
+    app.config['UPLOAD_TEMPLATE'] = app.config['TMP'] + "upload/"
     jsglue.init_app(app)
     if config_name != 'testing':
         csrf.init_app(app)
