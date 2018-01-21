@@ -123,6 +123,7 @@ def mobile_file_upload():
 
 @mobile.route('/trending', methods=['POST', 'GET'])
 def trending():
+    """
     pytrends = TrendReq(hl='en-US', tz=360)
     prev_list = []
     terms = []
@@ -135,8 +136,20 @@ def trending():
             popular_search_terms \
                 = pytrends.related_queries()[u'{}'.format(tags[i].name)][u'rising'].values.T[0]
             terms += popular_search_terms
+    """
+    data = []
+    img = "https://images-na.ssl-images-amazon.com/images/I/51KlaoGaVKL._AC_UL260_SR200,260_.jpg"
+    link = "https://www.amazon.com/Trend-Womens-Paris-Bohemian-Sleeve/dp/B011SP0IUC/ref=sr_1_1?s=apparel&ie=UTF8&qid=1516488999&sr=1-1&nodeID=7141123011&psd=1"
+    data.append({"img": img, "link": link})
 
-    return jsonify(terms)
+    img = "https://images-na.ssl-images-amazon.com/images/I/410z-V3xCzL._AC_UL260_SR200,260_.jpg"
+    link = "https://www.amazon.com/Trend-Sleeve-Casual-Cocktail-Floral/dp/B01N1A38VG/ref=sr_1_2?s=apparel&ie=UTF8&qid=1516488999&sr=1-2&nodeID=7141123011&psd=1"
+    data.append({"img": img, "link": link})
+
+    img = "https://images-na.ssl-images-amazon.com/images/I/51T1sApy%2BhL._AC_UL260_SR200,260_.jpg"
+    link = "https://www.amazon.com/Trend-Womens-Sleeve-V-Neck-Bohemian/dp/B073XV9572/ref=sr_1_3?s=apparel&ie=UTF8&qid=1516488999&sr=1-3&nodeID=7141123011&psd=1"
+    data.append({"img": img, "link": link})
+    return jsonify(data)
 
 
 @mobile.route('/rec', methods=["POST", "GET"])
