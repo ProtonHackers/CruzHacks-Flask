@@ -273,7 +273,7 @@ def sync():
     img.append(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwXiGr6w-Dm1HSf6bgJkBbmvrJziIwr1wqSdjQSDgHUiW4rcPLQw")
 
-    return jsonify({"img": img})
+    return jsonify(img)
 
 
 @mobile.route('/get_image/<string:path>')
