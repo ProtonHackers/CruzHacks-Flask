@@ -7,8 +7,11 @@ from google.oauth2 import id_token
 
 from app import db
 from app.mobile import mobile
+from app.models.garment import Garment
 from app.models.user import User
+from app.models.tag import Tag
 from app.main.utils import save_files
+from app.vision import cloud_api
 
 GOOGLE_CLIENT_ID = "566644882675-2msrrs3402pphinl7lbjpohe80527mak.apps.googleusercontent.com"
 from flask import json
@@ -93,6 +96,15 @@ def mobile_file_upload():
     garment = Garment(user_id=user.user_id,image_url=image_path)
     db.session.add(garment)
     db.session.commit()
+
+    tags = cloud_api.test_request(image_path)
+
+    for tag in tags:
+        t = Tag(name=tag, garment_id=garment.id)
+        db.session.add(t)
+
+    db.session.commit()
+
     return jsonify({"image_path":image_path})
 
 # @mobile.route('/verify_reset_email/<string:update_type>', methods=["POST", "GET"])
