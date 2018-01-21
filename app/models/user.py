@@ -34,6 +34,8 @@ class User(db.Model):
     google_id_token = db.Column(db.Text)
     mobile_access_token = db.Column(db.Text)
 
+    garments = db.relationship('Garment', backref='owner', lazy='dynamic')
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 

@@ -9,7 +9,6 @@ from flask_jsglue import JSGlue
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
-from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
@@ -23,7 +22,6 @@ celery = Celery(__name__,
 db = SQLAlchemy()
 migrate = Migrate(render_as_batch=True)
 lm = LoginManager()
-socketio = SocketIO(message_queue='redis://localhost:6379/4')
 jsglue = JSGlue()
 csrf = CSRFProtect()
 mail = Mail()
@@ -69,7 +67,6 @@ def create_app(config_name=None, db_ref=None):
         db_ref.reflect(app=app)
 
     migrate.init_app(app, db)
-    socketio.init_app(app, message_queue=app.config['SOCKETIO_MESSAGE_QUEUE'])
 
     jsglue.init_app(app)
     if config_name != 'testing':
@@ -82,7 +79,6 @@ def create_app(config_name=None, db_ref=None):
 
     mail.init_app(app)
 
-    socketio.init_app(app)
     app.debug = True
 
     from app.main import main
