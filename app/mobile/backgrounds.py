@@ -15,7 +15,7 @@ def remove_background(img_path):
     # == Processing =======================================================================
 
     # -- Read image -----------------------------------------------------------------------
-    img = cv2.imread(img_path)
+    img = cv2.imread(img_path, 0)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # -- Edge detection -------------------------------------------------------------------
