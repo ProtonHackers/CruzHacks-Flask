@@ -101,7 +101,7 @@ def mobile_file_upload():
         return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
     user = User.query.filter_by(mobile_access_token=auth_token).first()
     if user is None:
-        return {"error": "Invalid Token."}, 403
+        return jsonify({"error": "Invalid Token."}), 403
     image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
     garment = Garment(user_id=user.user_id, img_url=image_path)
     db.session.add(garment)
