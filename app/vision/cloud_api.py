@@ -1,30 +1,33 @@
 # coding=utf-8
-import io
 import requests
 import json
 
-from google.cloud import vision as cloud_vision
-from google.cloud.vision import types as cloud_types
 
 
 def test_request(image_path):
 
-    d = {
-            "requests":[
-                {
-                    "image":{
-                        "content":image_path
-                    },
-                "features":[
-                    {
-                        "type":"LABEL_DETECTION"
+    d = json.dumps({
+        "requests":[
+            {
+      "image":{
+        "source":{
+          "imageUri":
+            image_path
+        }
+      },
+      "features":[
+        {
+          "type":"LOGO_DETECTION",
+          "maxResults":1
+        }
+                    ]
                     }
                 ]
-            }
-        ]
-    }
-    r = requests.post('https://vision.googleapis.com/v1/images:annotate?key=service.json', data=d)
+            })
+    r = requests.post('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCq52GDfyXU5TAXGMVpEzvwGyr74XZTF1k', data=d)
+    print(r)
     labels = json.loads(r.text)
+    print(labels)
 
     # client = cloud_vision.ImageAnnotatorClient()
     #
@@ -37,4 +40,3 @@ def test_request(image_path):
     # labels = response.label_annotations
 
     return labels
-
