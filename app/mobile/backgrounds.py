@@ -2,8 +2,15 @@ import os
 import cv2
 import numpy as np
 from flask import current_app
+from PIL import Image
+import os
+
 
 def remove_background(img_path):
+    img = Image.open(img_path)
+    filename, file_extension = os.path.splitext(img_path)
+    img.save(filename + ".png")
+
     # == Parameters =======================================================================
     BLUR = 21
     CANNY_THRESH_1 = 10
