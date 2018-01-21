@@ -98,7 +98,6 @@ def mobile_google_login():
 @mobile.route('/upload', methods=["POST", "GET"])
 def mobile_file_upload():
     print(request.files, request.data, request.json)
-    # auth_token = request.headers.get('Authorization')
     auth_token = request.form.get("Authorization")
     if auth_token is None:
         return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
@@ -122,10 +121,11 @@ def mobile_file_upload():
     return jsonify({"image_path": image_path})
 
 
-@mobile.route('/trending')
+@mobile.route('/trending', methods=['POST', 'GET'])
 def trending():
     pytrends = TrendReq(hl='en-US', tz=360)
     prev_list = []
+    terms = []
 
     tags = Tag.query.all()
     for i in range(5):
@@ -134,8 +134,9 @@ def trending():
             pytrends.build_payload([tags[i].name], cat=0, timeframe='today 5-y', geo='', gprop='')
             popular_search_terms \
                 = pytrends.related_queries()[u'{}'.format(tags[i].name)][u'rising'].values.T[0]
+            terms += popular_search_terms
 
-    return jsonify(popular_search_terms)
+    return jsonify(terms)
 
 
 @mobile.route('/rec', methods=["POST", "GET"])
@@ -149,9 +150,53 @@ def rec():
     # tags is list of lists
 
     tags = Tag.query.all()
+    X = []
     y = []
+    attrs = []
+    counter = []
+    recommend = []
     for i in tags:
-        y.append(random.randint(1, 100))
+        if i.name not in attrs:
+            attrs.append(i.name)
+            counter.append(1)
+        else:
+            idx = attrs.index(i.name)
+            counter[idx] += 1
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
 
     # print(len(tags))
     # Assign ranks to various clothing articles
@@ -159,6 +204,23 @@ def rec():
     model = neighbors.KNeighborsRegressor()
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
+
+    return recommend
+
+
+@mobile.route('/sync', methods=['POST', 'GET'])
+def sync():
+    img = []
+    img.append(
+        "http://www.prana.com/media/catalog/product/cache/1/image/2000x/040ec09b1e35df139433887a97daa66f/w/3/w3amel116_black_l_alt_9.jpg")
+    img.append("https://xo.lulus.com/images/product/xlarge/2341622_369362.jpg")
+    img.append("http://www.boerandfitch.com/14968-thickbox_default/zebra-print-womens-top.jpg")
+    img.append("https://assets.academy.com/mgen/95/10787095.jpg")
+    img.append("https://images-na.ssl-images-amazon.com/images/I/717Z-BZnW3L._UX385_.jpg")
+    img.append(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwXiGr6w-Dm1HSf6bgJkBbmvrJziIwr1wqSdjQSDgHUiW4rcPLQw")
+
+    return jsonify(img)
 
 
 @mobile.route('/get_image/<string:path>')
