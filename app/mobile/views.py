@@ -204,9 +204,53 @@ def rec():
     # tags is list of lists
 
     tags = Tag.query.all()
+    X = []
     y = []
+    attrs = []
+    counter = []
+    recommend = []
     for i in tags:
-        y.append(random.randint(1, 100))
+        if i.name not in attrs:
+            attrs.append(i.name)
+            counter.append(1)
+        else:
+            idx = attrs.index(i.name)
+            counter[idx] += 1
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
+
+    max_idx = counter.index(max((counter)))
+    recommend.append(attrs[max_idx])
+    del attrs[max_idx]
+    del counter[max_idx]
 
     # print(len(tags))
     # Assign ranks to various clothing articles
@@ -214,6 +258,8 @@ def rec():
     model = neighbors.KNeighborsRegressor()
     model.fit(np.array(tags), np.array(y))
     pickle.dump(model, os.getcwd() + 'recommender')
+
+    return recommend
 
 
 @mobile.route('/get_image/<string:path>')
