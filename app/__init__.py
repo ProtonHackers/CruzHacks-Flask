@@ -67,9 +67,8 @@ def create_app(config_name=None, db_ref=None):
         db_ref.reflect(app=app)
 
     migrate.init_app(app, db)
-    buzz_path = basedir + "/app"
 
-    app.config['TMP'] = buzz_path + '/tmp/'
+    app.config['TMP'] = basedir + '/tmp/'
 
     app.config['UPLOAD_TEMPLATE'] = app.config['TMP'] + "upload/"
     jsglue.init_app(app)
