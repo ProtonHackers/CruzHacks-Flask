@@ -119,7 +119,7 @@ def mobile_file_upload():
 
     db.session.commit()
 
-    return jsonify({"image_path": image_path})
+    return jsonify({"image_path": image_path, "tags": tags})
 
 
 @mobile.route('/trending', methods=['POST', 'GET'])
