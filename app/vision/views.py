@@ -1,18 +1,12 @@
 # coding=utf-8
-import io
 import os
 from datetime import datetime
 import hashlib
-import requests
 from flask import request, jsonify
 
 from flask import current_app
 from app.vision import vision
 from app.vision import cloud_api
-
-from google.cloud import vision as cloud_vision
-from google.cloud.vision import types as cloud_types
-from google.cloud import storage as cloud_storage
 
 
 @vision.route('/vision', methods=["POST","GET"])

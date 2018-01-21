@@ -34,6 +34,9 @@ class User(db.Model):
     google_id_token = db.Column(db.Text)
     mobile_access_token = db.Column(db.Text)
 
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
     def get_row_data(self, style="fields"):
         return self.get_district_contact(style=style)
 

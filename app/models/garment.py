@@ -4,6 +4,9 @@ from app import db
 
 class Garment(db.model):
     __table_name__ = 'Garment'
-    garment_id = db.Column(db.Integer, primary_key=True, unique=True)
-    garment_name = db.Column(db.String(140), unique=False)
-    url = db.Column(db.String(350), unique=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    img_url = db.Column(db.String(350), unique=True)
+    tags = db.relationship('Tag', backref='garment', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Garment {}>'.format(self.garment_id)
