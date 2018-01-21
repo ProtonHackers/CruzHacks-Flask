@@ -1,13 +1,14 @@
 import os
 from base64 import b64encode
 
-from flask import request, jsonify, redirect, url_for
+from flask import request, jsonify, redirect, url_for, current_app
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
 from app import db
 from app.mobile import mobile
 from app.models.user import User
+from app.main.utils import save_files
 
 GOOGLE_CLIENT_ID = "566644882675-2msrrs3402pphinl7lbjpohe80527mak.apps.googleusercontent.com"
 from flask import json
@@ -62,7 +63,6 @@ def create_user(user):
 def mobile_google_login():
     print(request.data)
     data = get_decoded_data(request.data)
-    print(data)
     google_id_token = data.get('googleIdToken')
     email = data.get('email')
     full_name = data.get('full_name')
@@ -81,6 +81,19 @@ def mobile_google_login():
     print("Created Google User")
     return jsonify({"accessToken": access_token, "message": "Google Login Correct", "userID": user.user_id})
 
+@mobile.route('/upload')
+def mobile_file_upload():
+    auth_token = request.headers.get('Authorization')
+    if auth_token is None:
+        return jsonify({"error": "Invalid Auth Token. Please Sign in again"}), 403
+    user = User.query.filter_by(mobile_access_token=auth_token).first()
+    if user is None:
+        return {"error": "Invalid Token."}, 403
+    image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
+    garment = Garment(user_id=user.user_id,image_url=image_path)
+    db.session.add(garment)
+    db.session.commit()
+    return jsonify({"image_path":image_path})
 
 # @mobile.route('/verify_reset_email/<string:update_type>', methods=["POST", "GET"])
 # def mobile_verify_reset_email(update_type):

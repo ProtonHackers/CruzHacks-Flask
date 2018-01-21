@@ -9,12 +9,12 @@ from app.vision import vision
 from app.vision import cloud_api
 
 
-@vision.route('/vision', methods=["POST","GET"])
+@vision.route('/vision', methods=["POST", "GET"])
 def vision():
     image_path, _ = save_files('image_file', current_app.config['UPLOAD_TEMPLATE'], request.files)
 
     labels = cloud_api.test_request(image_path)
-    return jsonify({})
+    return jsonify({"image_path": image_path})
 
 
 def save_files(path, dir, request_files):
@@ -30,7 +30,7 @@ def save_files(path, dir, request_files):
         file_url = request.files[path]
         # print("file_url=",file_url)
         secret_file_url = hash_name(file_url.filename + str(datetime.now())) + \
-                           os.path.splitext(file_url.filename)[1]
+                          os.path.splitext(file_url.filename)[1]
         file_url.save(dir + secret_file_url)
         return secret_file_url, request_files[path].filename
     else:
@@ -38,9 +38,9 @@ def save_files(path, dir, request_files):
 
 
 def hash_name(name):
-   """
-   A Hashed name with md5
-   :param name: the name to hash
-   :return: A hashed name
-   """
-   return hashlib.md5(name.encode('utf-8')).hexdigest()
+    """
+    A Hashed name with md5
+    :param name: the name to hash
+    :return: A hashed name
+    """
+    return hashlib.md5(name.encode('utf-8')).hexdigest()
