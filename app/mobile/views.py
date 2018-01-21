@@ -8,6 +8,7 @@ import pickle
 import numpy as np
 from app.mobile import backgrounds
 from pytrends.request import TrendReq
+from PIL import Image
 
 from flask import request, jsonify, redirect, url_for, current_app, send_from_directory
 from google.auth.transport import requests
@@ -207,8 +208,9 @@ def rec():
 
     url = []
     for i in recommend:
-        x = Garment.filter_by(i.garment_id)
-        url.append(x)
+        g = Garment.query.filter_by(i.garment_id).first()
+
+        url.append([Image.open(g.img_url), g.img_url, i])
 
     return url
 
