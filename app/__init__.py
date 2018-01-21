@@ -27,6 +27,8 @@ csrf = CSRFProtect()
 mail = Mail()
 
 from app.models.user import *
+from app.models.garment import *
+from app.models.tag import *
 
 
 def initialize_celery(app):
