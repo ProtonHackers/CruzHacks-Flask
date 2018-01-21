@@ -2,8 +2,15 @@ import os
 import cv2
 import numpy as np
 from flask import current_app
+from PIL import Image
+import os
+
 
 def remove_background(img_path):
+    img = Image.open(current_app.config["UPLOAD_TEMPLATE"] + img_path)
+    filename, file_extension = os.path.splitext(img_path)
+    img.save(current_app.config["UPLOAD_TEMPLATE"] + filename + ".png")
+
     # == Parameters =======================================================================
     BLUR = 21
     CANNY_THRESH_1 = 10
@@ -15,8 +22,8 @@ def remove_background(img_path):
     # == Processing =======================================================================
 
     # -- Read image -----------------------------------------------------------------------
-    img = cv2.imread(img_path, 0)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.imread(img_path, 1)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # -- Edge detection -------------------------------------------------------------------
     edges = cv2.Canny(gray, CANNY_THRESH_1, CANNY_THRESH_2)

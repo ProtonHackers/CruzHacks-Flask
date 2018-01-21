@@ -41,4 +41,5 @@ def test_request(image_path):
     response = client.label_detection(image=image)
     labels = response.label_annotations
 
+
     return labels
