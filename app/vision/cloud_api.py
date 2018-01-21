@@ -18,7 +18,7 @@ def test_request(image_path):
       "features":[
         {
           "type":"LOGO_DETECTION",
-          "maxResults":1
+          "maxResults":2
         }
                     ]
                     }
